@@ -21,11 +21,17 @@ public class PlayerTracker {
   }
 
   public void tick() {
-    particles.stream().filter(loc -> loc.distance(player.getLocation()) <= plugin.getConfig().getDouble("display_radius", 25.0D)).forEach(loc -> /*CompletableFuture.runAsync(() -> */plugin.spawnParticle(player, loc)/*)*/);
+    particles.stream()
+        .filter(
+            loc ->
+                loc.distance(player.getLocation())
+                    <= plugin.getConfig().getDouble("display_radius", 25.0D))
+        .forEach(
+            loc -> /*CompletableFuture.runAsync(() -> */ plugin.spawnParticle(player, loc) /*)*/);
   }
 
   public void addNewLocation(Location loc) {
-    if(blocksMoved < plugin.getConfig().getInt("particle_place_frequency", 5)) {
+    if (blocksMoved < plugin.getConfig().getInt("particle_place_frequency", 5)) {
       blocksMoved++;
 
       return;

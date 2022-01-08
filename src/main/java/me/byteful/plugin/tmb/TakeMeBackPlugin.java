@@ -27,36 +27,40 @@ public final class TakeMeBackPlugin extends JavaPlugin implements Listener {
 
     Bukkit.getPluginManager().registerEvents(this, this);
 
-    Objects.requireNonNull(getCommand("takemeback")).setExecutor((sender, command, label, args) -> {
-      if(!(sender instanceof Player)) {
-        sender.sendMessage(colorize("&cOnly players can use this command!"));
+    Objects.requireNonNull(getCommand("takemeback"))
+        .setExecutor(
+            (sender, command, label, args) -> {
+              if (!(sender instanceof Player)) {
+                sender.sendMessage(colorize("&cOnly players can use this command!"));
 
-        return true;
-      }
+                return true;
+              }
 
-      if(!sender.hasPermission("takemeback.use")) {
-        sender.sendMessage(colorize(getConfig().getString("messages.no_permission")));
+              if (!sender.hasPermission("takemeback.use")) {
+                sender.sendMessage(colorize(getConfig().getString("messages.no_permission")));
 
-        return true;
-      }
+                return true;
+              }
 
-      final Player player = (Player) sender;
-      final UUID uuid = player.getUniqueId();
+              final Player player = (Player) sender;
+              final UUID uuid = player.getUniqueId();
 
-      if(trackers.containsKey(uuid)) {
-        sender.sendMessage(colorize(getConfig().getString("messages.toggle_trail_off")));
+              if (trackers.containsKey(uuid)) {
+                sender.sendMessage(colorize(getConfig().getString("messages.toggle_trail_off")));
 
-        trackers.remove(uuid);
-      } else {
-        sender.sendMessage(colorize(getConfig().getString("messages.toggle_trail_on")));
+                trackers.remove(uuid);
+              } else {
+                sender.sendMessage(colorize(getConfig().getString("messages.toggle_trail_on")));
 
-        trackers.put(uuid, new PlayerTracker(this, player));
-      }
+                trackers.put(uuid, new PlayerTracker(this, player));
+              }
 
-      return true;
-    });
+              return true;
+            });
 
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> trackers.values().forEach(PlayerTracker::tick), 0L, 20L);
+    Bukkit.getScheduler()
+        .scheduleSyncRepeatingTask(
+            this, () -> trackers.values().forEach(PlayerTracker::tick), 0L, 20L);
   }
 
   @Override
@@ -65,13 +69,20 @@ public final class TakeMeBackPlugin extends JavaPlugin implements Listener {
   }
 
   void spawnParticle(Player player, Location location) {
-    final Set<? extends Player> players = new HashSet<>(getConfig().getBoolean("broadcast_particle", false) ? Bukkit.getOnlinePlayers() : Collections.singleton(player));
+    final Set<? extends Player> players =
+        new HashSet<>(
+            getConfig().getBoolean("broadcast_particle", false)
+                ? Bukkit.getOnlinePlayers()
+                : Collections.singleton(player));
     players.removeIf(p -> !p.getWorld().equals(location.getWorld()));
 
-    final String type = Objects.requireNonNull(getConfig().getString("particle.type", "REDSTONE"), "Failed to find 'type' in particle config.")
-        .toUpperCase(Locale.ROOT)
-        .replace(" ", "_")
-        .trim();
+    final String type =
+        Objects.requireNonNull(
+                getConfig().getString("particle.type", "REDSTONE"),
+                "Failed to find 'type' in particle config.")
+            .toUpperCase(Locale.ROOT)
+            .replace(" ", "_")
+            .trim();
 
     final ConfigurationSection data = getConfig().getConfigurationSection("particle.data");
     assert data != null : "Failed to find 'data' section in particle config.";
@@ -94,8 +105,7 @@ public final class TakeMeBackPlugin extends JavaPlugin implements Listener {
 
     final int speed = data.getInt("speed", 1);
 
-    new ParticleBuilder(ParticleEffect.valueOf(
-        type), location)
+    new ParticleBuilder(ParticleEffect.valueOf(type), location)
         .setAmount(amount)
         .setColor(new Color(red, green, blue))
         .setOffset(x, y, z)
@@ -105,21 +115,21 @@ public final class TakeMeBackPlugin extends JavaPlugin implements Listener {
 
   @EventHandler
   public void onLeave(PlayerJoinEvent event) {
-    if(getConfig().getBoolean("stop_trail.on_leave", true)) {
+    if (getConfig().getBoolean("stop_trail.on_leave", true)) {
       trackers.remove(event.getPlayer().getUniqueId());
     }
   }
 
   @EventHandler
   public void onDeath(PlayerDeathEvent event) {
-    if(getConfig().getBoolean("stop_trail.on_death", true)) {
+    if (getConfig().getBoolean("stop_trail.on_death", true)) {
       trackers.remove(event.getEntity().getUniqueId());
     }
   }
 
   @EventHandler
   public void onWorldChange(PlayerChangedWorldEvent event) {
-    if(getConfig().getBoolean("stop_trail.on_world_change", true)) {
+    if (getConfig().getBoolean("stop_trail.on_world_change", true)) {
       trackers.remove(event.getPlayer().getUniqueId());
     }
   }
@@ -130,7 +140,9 @@ public final class TakeMeBackPlugin extends JavaPlugin implements Listener {
     final Location from = event.getFrom();
     final Location to = event.getTo();
 
-    if (to == null || !trackers.containsKey(player.getUniqueId()) || from.getBlock().equals(to.getBlock())) {
+    if (to == null
+        || !trackers.containsKey(player.getUniqueId())
+        || from.getBlock().equals(to.getBlock())) {
       return;
     }
 
