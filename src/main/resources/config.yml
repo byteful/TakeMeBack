@@ -1,0 +1,49 @@
+#
+# TakeMeBack v${version} by byteful#0001
+#
+
+# Settings for messages displayed by TakeMeBack.
+messages:
+  no_permission: "&cYou do not have permission to execute this command!"
+  toggle_trail_on: "&eYour trail has been toggled &aon&e. Particles will start spawning from your current location."
+  toggle_trail_off: "&eYour trail has been toggled &coff&e. All existing particles have been removed."
+
+# Set to true if particle trail should be seen by all players on the server.
+broadcast_particle: false
+
+# The radius in which particles are visible.
+display_radius: 25.0
+
+# The frequency in which particles are placed. (In blocks)
+particle_place_frequency: 5
+
+# Settings for the particle that makes up a player's trail.
+# Use this for particle-type: https://javadoc.io/doc/xyz.xenondevs/particle/latest/xyz/xenondevs/particle/ParticleEffect.html
+particle:
+  # The enum type for the particle. Use link above for a list.
+  type: REDSTONE
+  # Extra values for data type for certain particles.
+  data:
+    # The amount of particle.
+    amount: 50
+    # The color of the particle.
+    color:
+      r: 255
+      g: 0
+      b: 0
+    # The offset of the particle from its origin.
+    offset:
+      x: 0
+      y: 0.5
+      z: 0
+    # The speed of the particle animation.
+    speed: 1
+
+# Settings for triggers that can stop a player's trail.
+stop_trail:
+  # Stop the player's trail when they leave the server.
+  on_leave: true
+  # Stop the player's trail when they die.
+  on_death: true
+  # Stop the player's trail when they switch to a different world (nether portal, end portal, teleport, etc).
+  on_world_change: true
