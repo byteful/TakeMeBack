@@ -1,7 +1,7 @@
 <h5 align="center">SpigotMC: N/A</h5>
 <h5 align="center">Support/Help Server: https://discord.gg/G8BDgqsuyw</h5>
 
-![Logo]()
+![Logo](https://github.com/byteful/TakeMeBack/raw/master/TakeMeBack%20Large%20Logo.png)
 
 <h3 align="center">A plugin that spawns a particle trail from your starting location to help you make your way back there.</h3>
 
