@@ -1,3 +1,4 @@
+[![Discord](https://img.shields.io/discord/911029017472270357?color=7289da&logo=discord)](https://discord.gg/G8BDgqsuyw)
 <h5 align="center">SpigotMC: https://www.spigotmc.org/resources/takemeback.99049/</h5>
 <h5 align="center">Support/Help Server: https://discord.gg/G8BDgqsuyw</h5>
 
